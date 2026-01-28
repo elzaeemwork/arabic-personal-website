@@ -27,7 +27,8 @@ export default function AdminLoginPage() {
             })
 
             if (authError) {
-                setError('البريد الإلكتروني أو كلمة المرور غير صحيحة')
+                console.error('Auth error:', authError)
+                setError(authError.message || 'البريد الإلكتروني أو كلمة المرور غير صحيحة')
                 return
             }
 
