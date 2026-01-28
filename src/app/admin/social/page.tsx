@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Plus, Save, Trash2, Loader2, Edit2, X, CheckCircle } from 'lucide-react'
+import { Plus, Save, Trash2, Loader2, Edit2, X, CheckCircle, ChevronDown } from 'lucide-react'
 import type { SocialLink } from '@/types/database'
 
 // Platform configurations with colors and icons
@@ -39,13 +39,69 @@ const SocialIcon = ({ platform, size = 20 }: { platform: string; size?: number }
     if (!config) return null
 
     return (
-        <svg
-            viewBox="0 0 24 24"
-            fill={config.color}
-            style={{ width: size, height: size }}
-        >
+        <svg viewBox="0 0 24 24" fill={config.color} style={{ width: size, height: size }}>
             <path d={config.icon} />
         </svg>
+    )
+}
+
+// Custom Dropdown Component
+const CustomSelect = ({ value, onChange, options }: {
+    value: string
+    onChange: (value: string) => void
+    options: { value: string; label: string; color: string }[]
+}) => {
+    const [isOpen, setIsOpen] = useState(false)
+    const dropdownRef = useRef<HTMLDivElement>(null)
+    const selectedOption = options.find(opt => opt.value === value)
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsOpen(false)
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [])
+
+    return (
+        <div className="relative" ref={dropdownRef}>
+            <button
+                type="button"
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-indigo-500 focus:outline-none flex items-center justify-between gap-3 text-right"
+            >
+                <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: selectedOption?.color + '20' }}>
+                        <SocialIcon platform={value} size={18} />
+                    </div>
+                    <span>{selectedOption?.label}</span>
+                </div>
+                <ChevronDown className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {isOpen && (
+                <div className="absolute z-50 w-full mt-2 py-2 rounded-xl bg-[#1a1a2e] border border-white/10 shadow-xl max-h-64 overflow-y-auto">
+                    {options.map((option) => (
+                        <button
+                            key={option.value}
+                            type="button"
+                            onClick={() => {
+                                onChange(option.value)
+                                setIsOpen(false)
+                            }}
+                            className={`w-full px-4 py-3 flex items-center gap-3 hover:bg-white/10 transition-colors text-right ${value === option.value ? 'bg-indigo-500/20' : ''}`}
+                        >
+                            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: option.color + '20' }}>
+                                <SocialIcon platform={option.value} size={18} />
+                            </div>
+                            <span>{option.label}</span>
+                        </button>
+                    ))}
+                </div>
+            )}
+        </div>
     )
 }
 
@@ -122,38 +178,37 @@ export default function AdminSocialPage() {
     }
 
     return (
-        <div className="space-y-8">
-            <div className="flex items-center justify-between">
+        <div className="space-y-6 sm:space-y-8">
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold gradient-text mb-2">روابط التواصل الاجتماعي</h1>
-                    <p className="text-gray-400">إدارة روابط منصات التواصل الاجتماعي ({platformOptions.length} منصة متاحة)</p>
+                    <h1 className="text-2xl sm:text-3xl font-bold gradient-text mb-2">روابط التواصل الاجتماعي</h1>
+                    <p className="text-gray-400 text-sm sm:text-base">إدارة روابط منصات التواصل ({platformOptions.length} منصة)</p>
                 </div>
-                <button onClick={() => setIsAdding(true)} className="btn-primary px-4 py-2 rounded-xl flex items-center gap-2">
+                <button onClick={() => setIsAdding(true)} className="btn-primary px-4 py-2 rounded-xl flex items-center justify-center gap-2 w-full sm:w-auto">
                     <Plus className="w-5 h-5" /><span>إضافة رابط</span>
                 </button>
             </div>
 
+            {/* Success Message */}
             {message && (
-                <div className="p-4 rounded-xl bg-green-500/10 text-green-400 flex items-center gap-3 animate-fade-in">
-                    <CheckCircle className="w-5 h-5" /><span>{message}</span>
+                <div className="p-4 rounded-xl bg-green-500/10 text-green-400 flex items-center gap-3">
+                    <CheckCircle className="w-5 h-5 flex-shrink-0" /><span>{message}</span>
                 </div>
             )}
 
+            {/* Add Form */}
             {isAdding && (
-                <div className="glass rounded-2xl p-6 space-y-4">
-                    <h2 className="text-xl font-bold">إضافة رابط جديد</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="glass rounded-2xl p-4 sm:p-6 space-y-4">
+                    <h2 className="text-lg sm:text-xl font-bold">إضافة رابط جديد</h2>
+                    <div className="grid grid-cols-1 gap-4">
                         <div>
                             <label className="block text-sm font-medium mb-2">اختر المنصة</label>
-                            <select
+                            <CustomSelect
                                 value={formData.platform}
-                                onChange={(e) => setFormData({ ...formData, platform: e.target.value })}
-                                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-indigo-500 focus:outline-none"
-                            >
-                                {platformOptions.map(opt => (
-                                    <option key={opt.value} value={opt.value}>{opt.label}</option>
-                                ))}
-                            </select>
+                                onChange={(value) => setFormData({ ...formData, platform: value })}
+                                options={platformOptions}
+                            />
                         </div>
                         <div>
                             <label className="block text-sm font-medium mb-2">الرابط</label>
@@ -169,20 +224,17 @@ export default function AdminSocialPage() {
 
                     {/* Preview */}
                     <div className="p-4 rounded-xl bg-white/5 flex items-center gap-4">
-                        <div
-                            className="w-12 h-12 rounded-xl flex items-center justify-center"
-                            style={{ backgroundColor: platformConfigs[formData.platform]?.color + '20' }}
-                        >
+                        <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: platformConfigs[formData.platform]?.color + '20' }}>
                             <SocialIcon platform={formData.platform} size={24} />
                         </div>
-                        <div>
-                            <span className="font-medium">{platformConfigs[formData.platform]?.label}</span>
-                            <p className="text-sm text-gray-400">{formData.url || 'أدخل الرابط...'}</p>
+                        <div className="min-w-0 flex-1">
+                            <span className="font-medium block">{platformConfigs[formData.platform]?.label}</span>
+                            <p className="text-sm text-gray-400 truncate">{formData.url || 'أدخل الرابط...'}</p>
                         </div>
                     </div>
 
-                    <div className="flex gap-2">
-                        <button onClick={handleAdd} className="btn-primary px-4 py-2 rounded-lg flex items-center gap-2">
+                    <div className="flex flex-col sm:flex-row gap-2">
+                        <button onClick={handleAdd} className="btn-primary px-4 py-2 rounded-lg flex items-center justify-center gap-2 flex-1 sm:flex-none">
                             <Save className="w-4 h-4" /><span>حفظ</span>
                         </button>
                         <button onClick={() => setIsAdding(false)} className="px-4 py-2 rounded-lg border border-white/20 hover:bg-white/10">إلغاء</button>
@@ -191,30 +243,26 @@ export default function AdminSocialPage() {
             )}
 
             {/* Links Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
                 {links.map((link) => {
                     const config = platformConfigs[link.platform] || { label: link.platform, color: '#6366f1' }
                     return (
-                        <div key={link.id} className="glass rounded-2xl p-4 transition-all hover:bg-white/5">
+                        <div key={link.id} className="glass rounded-xl sm:rounded-2xl p-3 sm:p-4 transition-all hover:bg-white/5">
                             {editingId === link.id ? (
-                                <div className="space-y-4">
-                                    <div className="grid grid-cols-1 gap-3">
-                                        <select
-                                            value={link.platform}
-                                            onChange={(e) => setLinks(links.map(l => l.id === link.id ? { ...l, platform: e.target.value } : l))}
-                                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-indigo-500 focus:outline-none"
-                                        >
-                                            {platformOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-                                        </select>
-                                        <input
-                                            type="url"
-                                            value={link.url}
-                                            onChange={(e) => setLinks(links.map(l => l.id === link.id ? { ...l, url: e.target.value } : l))}
-                                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-indigo-500 focus:outline-none"
-                                        />
-                                    </div>
+                                <div className="space-y-3">
+                                    <CustomSelect
+                                        value={link.platform}
+                                        onChange={(value) => setLinks(links.map(l => l.id === link.id ? { ...l, platform: value } : l))}
+                                        options={platformOptions}
+                                    />
+                                    <input
+                                        type="url"
+                                        value={link.url}
+                                        onChange={(e) => setLinks(links.map(l => l.id === link.id ? { ...l, url: e.target.value } : l))}
+                                        className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-indigo-500 focus:outline-none"
+                                    />
                                     <div className="flex gap-2">
-                                        <button onClick={() => handleUpdate(link)} className="btn-primary px-3 py-2 rounded-lg flex items-center gap-2 text-sm">
+                                        <button onClick={() => handleUpdate(link)} className="btn-primary px-3 py-2 rounded-lg flex items-center gap-2 text-sm flex-1 sm:flex-none justify-center">
                                             <Save className="w-4 h-4" /><span>حفظ</span>
                                         </button>
                                         <button onClick={() => setEditingId(null)} className="px-3 py-2 rounded-lg border border-white/20 hover:bg-white/10">
@@ -223,35 +271,24 @@ export default function AdminSocialPage() {
                                     </div>
                                 </div>
                             ) : (
-                                <div className="flex items-center gap-4">
-                                    <div
-                                        className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                                        style={{ backgroundColor: config.color + '20' }}
-                                    >
-                                        <SocialIcon platform={link.platform} size={24} />
+                                <div className="flex items-center gap-3 sm:gap-4">
+                                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: config.color + '20' }}>
+                                        <SocialIcon platform={link.platform} size={20} />
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <h3 className="font-bold">{config.label}</h3>
-                                        <a
-                                            href={link.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="text-gray-400 hover:text-indigo-400 text-sm truncate block"
-                                        >
+                                        <h3 className="font-bold text-sm sm:text-base">{config.label}</h3>
+                                        <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-indigo-400 text-xs sm:text-sm truncate block">
                                             {link.url}
                                         </a>
                                     </div>
                                     <div className="flex items-center gap-1 flex-shrink-0">
-                                        <button
-                                            onClick={() => toggleVisibility(link)}
-                                            className={`px-2 py-1 rounded-lg text-xs ${link.is_visible ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}
-                                        >
+                                        <button onClick={() => toggleVisibility(link)} className={`px-2 py-1 rounded-lg text-xs hidden sm:block ${link.is_visible ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
                                             {link.is_visible ? 'ظاهر' : 'مخفي'}
                                         </button>
-                                        <button onClick={() => setEditingId(link.id)} className="p-2 rounded-lg hover:bg-white/10">
+                                        <button onClick={() => setEditingId(link.id)} className="p-1.5 sm:p-2 rounded-lg hover:bg-white/10">
                                             <Edit2 className="w-4 h-4" />
                                         </button>
-                                        <button onClick={() => handleDelete(link.id)} className="p-2 rounded-lg hover:bg-red-500/10 text-red-400">
+                                        <button onClick={() => handleDelete(link.id)} className="p-1.5 sm:p-2 rounded-lg hover:bg-red-500/10 text-red-400">
                                             <Trash2 className="w-4 h-4" />
                                         </button>
                                     </div>
@@ -262,13 +299,14 @@ export default function AdminSocialPage() {
                 })}
             </div>
 
+            {/* Empty State */}
             {links.length === 0 && !isAdding && (
-                <div className="text-center py-16 glass rounded-2xl">
-                    <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mx-auto mb-4">
-                        <Plus className="w-8 h-8 text-gray-400" />
+                <div className="text-center py-12 sm:py-16 glass rounded-2xl">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/5 flex items-center justify-center mx-auto mb-4">
+                        <Plus className="w-7 h-7 sm:w-8 sm:h-8 text-gray-400" />
                     </div>
-                    <h3 className="text-xl font-bold mb-2">لا توجد روابط حتى الآن</h3>
-                    <p className="text-gray-400 mb-4">أضف روابط التواصل الاجتماعي الخاصة بك</p>
+                    <h3 className="text-lg sm:text-xl font-bold mb-2">لا توجد روابط حتى الآن</h3>
+                    <p className="text-gray-400 mb-4 text-sm sm:text-base">أضف روابط التواصل الاجتماعي الخاصة بك</p>
                     <button onClick={() => setIsAdding(true)} className="btn-primary px-6 py-2 rounded-xl">
                         إضافة رابط جديد
                     </button>
