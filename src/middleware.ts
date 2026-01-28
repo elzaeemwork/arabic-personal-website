@@ -31,17 +31,17 @@ export async function middleware(request: NextRequest) {
         data: { user },
     } = await supabase.auth.getUser()
 
+    const isLoginPage = request.nextUrl.pathname === '/admin/login'
+
     // Protect admin routes (except login)
-    if (request.nextUrl.pathname.startsWith('/admin') && !request.nextUrl.pathname.startsWith('/admin/login')) {
-        if (!user) {
-            const url = request.nextUrl.clone()
-            url.pathname = '/admin/login'
-            return NextResponse.redirect(url)
-        }
+    if (!user && request.nextUrl.pathname.startsWith('/admin') && !isLoginPage) {
+        const url = request.nextUrl.clone()
+        url.pathname = '/admin/login'
+        return NextResponse.redirect(url)
     }
 
-    // Redirect logged in users away from login
-    if (request.nextUrl.pathname === '/admin/login' && user) {
+    // Redirect logged in users away from login page to admin dashboard
+    if (user && isLoginPage) {
         const url = request.nextUrl.clone()
         url.pathname = '/admin'
         return NextResponse.redirect(url)

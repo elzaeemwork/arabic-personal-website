@@ -1,6 +1,6 @@
-import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
 import AdminSidebar from '@/components/admin/AdminSidebar'
+import { createClient } from '@/lib/supabase/server'
+import { redirect } from 'next/navigation'
 
 export default async function AdminLayout({
     children,
@@ -10,14 +10,8 @@ export default async function AdminLayout({
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
-    // Check if we're on login page
-    const isLoginPage = typeof window !== 'undefined' && window.location.pathname === '/admin/login'
-
-    if (!user && !isLoginPage) {
-        redirect('/admin/login')
-    }
-
-    // If on login page, just render children without sidebar
+    // Middleware handles the redirect, so we just render appropriately
+    // If no user, this must be the login page (allowed by middleware)
     if (!user) {
         return <>{children}</>
     }
