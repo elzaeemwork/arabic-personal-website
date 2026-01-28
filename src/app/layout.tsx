@@ -4,6 +4,10 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "موقعي الشخصي",
   description: "موقع شخصي احترافي يعرض خدماتي ومشاريعي",
+  icons: {
+    icon: "/favicon.png",
+    apple: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
