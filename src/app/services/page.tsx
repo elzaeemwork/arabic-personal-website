@@ -4,8 +4,11 @@ import Footer from '@/components/public/Footer'
 import ServicesSection from '@/components/public/ServicesSection'
 
 export const metadata: Metadata = {
-    title: 'الخدمات | موقعي الشخصي',
-    description: 'الخدمات التي أقدمها في مجال تطوير البرمجيات',
+    title: 'الخدمات',
+    description: 'خدمات يوسف محمد في تطوير البرمجيات - تطوير المواقع، التطبيقات، الأنظمة المتكاملة، وحلول البرمجيات الاحترافية.',
+    alternates: {
+        canonical: 'https://yousef-muhamed.vercel.app/services',
+    },
 }
 
 export default function ServicesPage() {

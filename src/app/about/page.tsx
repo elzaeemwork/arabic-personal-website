@@ -4,8 +4,11 @@ import Footer from '@/components/public/Footer'
 import AboutSection from '@/components/public/AboutSection'
 
 export const metadata: Metadata = {
-    title: 'من أنا | موقعي الشخصي',
-    description: 'تعرف على المزيد عني وعن خبراتي ومهاراتي',
+    title: 'من أنا',
+    description: 'تعرف على يوسف محمد - مطور برمجيات محترف من الموصل، العراق. خبراتي ومهاراتي في تطوير المواقع والتطبيقات.',
+    alternates: {
+        canonical: 'https://yousef-muhamed.vercel.app/about',
+    },
 }
 
 export default function AboutPage() {

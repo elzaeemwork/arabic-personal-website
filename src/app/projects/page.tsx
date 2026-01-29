@@ -4,8 +4,11 @@ import Footer from '@/components/public/Footer'
 import ProjectsSection from '@/components/public/ProjectsSection'
 
 export const metadata: Metadata = {
-    title: 'المشاريع | موقعي الشخصي',
-    description: 'استعرض مشاريعي السابقة وأعمالي',
+    title: 'المشاريع',
+    description: 'استعرض مشاريع يوسف محمد السابقة - أعمال برمجية احترافية في تطوير المواقع والتطبيقات والأنظمة.',
+    alternates: {
+        canonical: 'https://yousef-muhamed.vercel.app/projects',
+    },
 }
 
 export default function ProjectsPage() {

@@ -5,8 +5,11 @@ import { createClient } from '@/lib/supabase/server'
 import { Download, FileText } from 'lucide-react'
 
 export const metadata: Metadata = {
-    title: 'السيرة الذاتية | موقعي الشخصي',
-    description: 'اطلع على سيرتي الذاتية وخبراتي المهنية',
+    title: 'السيرة الذاتية',
+    description: 'السيرة الذاتية ليوسف محمد - مطور برمجيات محترف. اطلع على خبراتي ومهاراتي المهنية في تطوير البرمجيات.',
+    alternates: {
+        canonical: 'https://yousef-muhamed.vercel.app/resume',
+    },
 }
 
 export default async function ResumePage() {

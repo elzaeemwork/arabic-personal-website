@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowLeft, Download } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 
@@ -57,10 +58,14 @@ export default async function HeroSection() {
                             <div className="relative">
                                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl blur-3xl opacity-30 animate-pulse"></div>
                                 <div className="relative w-72 h-72 md:w-96 md:h-96 rounded-3xl overflow-hidden border-4 border-white/10">
-                                    <img
+                                    <Image
                                         src={profile.profile_image_url}
-                                        alt={profile.name}
-                                        className="w-full h-full object-cover"
+                                        alt={`صورة ${profile.name}`}
+                                        fill
+                                        sizes="(max-width: 768px) 288px, 384px"
+                                        className="object-cover"
+                                        priority
+                                        loading="eager"
                                     />
                                 </div>
                             </div>
