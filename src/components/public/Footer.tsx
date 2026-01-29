@@ -47,6 +47,7 @@ export default async function Footer() {
     // Parse key-value settings
     let siteName = 'موقعي'
     let logoLetter = 'م'
+    let logoFont = 'Tajawal'
 
     if (siteSettingsData && siteSettingsData.length > 0) {
         siteSettingsData.forEach((item: { setting_key: string; setting_value: string }) => {
@@ -54,8 +55,14 @@ export default async function Footer() {
                 siteName = item.setting_value
             } else if (item.setting_key === 'logo_letter') {
                 logoLetter = item.setting_value
+            } else if (item.setting_key === 'logo_font' || item.setting_key === 'font_family') {
+                logoFont = item.setting_value
             }
         })
+    }
+
+    const logoFontStyle = {
+        fontFamily: `"${logoFont}", serif`
     }
 
     return (
@@ -66,9 +73,9 @@ export default async function Footer() {
                     <div>
                         <Link href="/" className="flex items-center gap-2 mb-4">
                             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-                                <span className="text-white font-bold text-lg">{logoLetter}</span>
+                                <span className="text-white font-bold text-lg" style={logoFontStyle}>{logoLetter}</span>
                             </div>
-                            <span className="text-xl font-bold gradient-text">{siteName}</span>
+                            <span className="text-xl font-bold gradient-text" style={logoFontStyle}>{siteName}</span>
                         </Link>
                         <p className="text-gray-400 leading-relaxed">
                             موقع شخصي احترافي يعرض خدماتي ومشاريعي وخبراتي في مجال تطوير البرمجيات

@@ -58,6 +58,11 @@ export default function Navbar() {
         fetchSettings()
     }, [])
 
+    // Create inline style for custom font
+    const logoFontStyle = {
+        fontFamily: `"${settings.font_family}", serif`
+    }
+
     return (
         <nav className="fixed top-0 right-0 left-0 z-50 glass">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -65,9 +70,19 @@ export default function Navbar() {
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2">
                         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-                            <span className="text-white font-bold text-lg">{settings.logo_letter}</span>
+                            <span
+                                className="text-white font-bold text-lg"
+                                style={logoFontStyle}
+                            >
+                                {settings.logo_letter}
+                            </span>
                         </div>
-                        <span className="text-xl font-bold gradient-text">{settings.site_name}</span>
+                        <span
+                            className="text-xl font-bold gradient-text"
+                            style={logoFontStyle}
+                        >
+                            {settings.site_name}
+                        </span>
                     </Link>
 
                     {/* Desktop Navigation */}
