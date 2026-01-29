@@ -33,11 +33,26 @@ export default function Navbar() {
             const supabase = createClient()
             const { data } = await supabase
                 .from('site_settings')
-                .select('site_name, logo_letter, font_family')
-                .single()
+                .select('setting_key, setting_value')
 
-            if (data) {
-                setSettings(data)
+            if (data && data.length > 0) {
+                const settingsObj: SiteSettings = {
+                    site_name: 'موقعي',
+                    logo_letter: 'م',
+                    font_family: 'Tajawal'
+                }
+
+                data.forEach((item: { setting_key: string; setting_value: string }) => {
+                    if (item.setting_key === 'site_name') {
+                        settingsObj.site_name = item.setting_value
+                    } else if (item.setting_key === 'logo_letter') {
+                        settingsObj.logo_letter = item.setting_value
+                    } else if (item.setting_key === 'logo_font' || item.setting_key === 'font_family') {
+                        settingsObj.font_family = item.setting_value
+                    }
+                })
+
+                setSettings(settingsObj)
             }
         }
         fetchSettings()

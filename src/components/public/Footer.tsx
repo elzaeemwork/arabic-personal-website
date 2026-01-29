@@ -39,13 +39,24 @@ const SocialIcon = ({ platform }: { platform: string }) => {
 export default async function Footer() {
     const supabase = await createClient()
 
-    const [{ data: socialLinks }, { data: siteSettings }] = await Promise.all([
+    const [{ data: socialLinks }, { data: siteSettingsData }] = await Promise.all([
         supabase.from('social_links').select('*').eq('is_visible', true).order('sort_order'),
-        supabase.from('site_settings').select('site_name, logo_letter').single()
+        supabase.from('site_settings').select('setting_key, setting_value')
     ])
 
-    const siteName = siteSettings?.site_name || 'موقعي'
-    const logoLetter = siteSettings?.logo_letter || 'م'
+    // Parse key-value settings
+    let siteName = 'موقعي'
+    let logoLetter = 'م'
+
+    if (siteSettingsData && siteSettingsData.length > 0) {
+        siteSettingsData.forEach((item: { setting_key: string; setting_value: string }) => {
+            if (item.setting_key === 'site_name') {
+                siteName = item.setting_value
+            } else if (item.setting_key === 'logo_letter') {
+                logoLetter = item.setting_value
+            }
+        })
+    }
 
     return (
         <footer className="glass mt-auto">
