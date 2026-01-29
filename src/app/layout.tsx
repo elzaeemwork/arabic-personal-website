@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     canonical: siteUrl,
   },
   verification: {
-    google: "", // سيتم إضافتها لاحقاً من Google Search Console
+    google: "3D43N7XYf_47pHMFvWRmNcE6G5Fd1UQnU29SjIEz1X8",
   },
 };
 
