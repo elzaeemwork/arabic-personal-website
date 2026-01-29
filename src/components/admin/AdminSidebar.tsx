@@ -16,7 +16,8 @@ import {
     Share2,
     Search,
     Menu,
-    X
+    X,
+    Palette
 } from 'lucide-react'
 
 const menuItems = [
@@ -28,6 +29,7 @@ const menuItems = [
     { href: '/admin/messages', label: 'الرسائل', icon: Mail },
     { href: '/admin/seo', label: 'إعدادات SEO', icon: Search },
     { href: '/admin/sections', label: 'التحكم بالأقسام', icon: Settings },
+    { href: '/admin/branding', label: 'إعدادات الهوية', icon: Palette },
 ]
 
 export default function AdminSidebar() {

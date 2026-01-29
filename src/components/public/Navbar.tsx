@@ -1,8 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Menu, X, Home, User, Briefcase, FolderOpen, Mail, FileText } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
 
 const navItems = [
     { href: '/', label: 'الرئيسية', icon: Home },
@@ -13,8 +14,34 @@ const navItems = [
     { href: '/contact', label: 'تواصل معي', icon: Mail },
 ]
 
+interface SiteSettings {
+    site_name: string
+    logo_letter: string
+    font_family: string
+}
+
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
+    const [settings, setSettings] = useState<SiteSettings>({
+        site_name: 'موقعي',
+        logo_letter: 'م',
+        font_family: 'Tajawal'
+    })
+
+    useEffect(() => {
+        async function fetchSettings() {
+            const supabase = createClient()
+            const { data } = await supabase
+                .from('site_settings')
+                .select('site_name, logo_letter, font_family')
+                .single()
+
+            if (data) {
+                setSettings(data)
+            }
+        }
+        fetchSettings()
+    }, [])
 
     return (
         <nav className="fixed top-0 right-0 left-0 z-50 glass">
@@ -23,9 +50,9 @@ export default function Navbar() {
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2">
                         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-                            <span className="text-white font-bold text-lg">م</span>
+                            <span className="text-white font-bold text-lg">{settings.logo_letter}</span>
                         </div>
-                        <span className="text-xl font-bold gradient-text">موقعي</span>
+                        <span className="text-xl font-bold gradient-text">{settings.site_name}</span>
                     </Link>
 
                     {/* Desktop Navigation */}

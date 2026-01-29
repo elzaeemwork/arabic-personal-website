@@ -22,7 +22,6 @@ const platformIcons: { [key: string]: { color: string; path: string } } = {
 const SocialIcon = ({ platform }: { platform: string }) => {
     const icon = platformIcons[platform.toLowerCase()]
     if (!icon) {
-        // Default email icon for unknown platforms
         return (
             <svg viewBox="0 0 24 24" fill="#9ca3af" className="w-5 h-5">
                 <path d={platformIcons.email.path} />
@@ -39,11 +38,14 @@ const SocialIcon = ({ platform }: { platform: string }) => {
 
 export default async function Footer() {
     const supabase = await createClient()
-    const { data: socialLinks } = await supabase
-        .from('social_links')
-        .select('*')
-        .eq('is_visible', true)
-        .order('sort_order')
+
+    const [{ data: socialLinks }, { data: siteSettings }] = await Promise.all([
+        supabase.from('social_links').select('*').eq('is_visible', true).order('sort_order'),
+        supabase.from('site_settings').select('site_name, logo_letter').single()
+    ])
+
+    const siteName = siteSettings?.site_name || 'موقعي'
+    const logoLetter = siteSettings?.logo_letter || 'م'
 
     return (
         <footer className="glass mt-auto">
@@ -53,9 +55,9 @@ export default async function Footer() {
                     <div>
                         <Link href="/" className="flex items-center gap-2 mb-4">
                             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-                                <span className="text-white font-bold text-lg">م</span>
+                                <span className="text-white font-bold text-lg">{logoLetter}</span>
                             </div>
-                            <span className="text-xl font-bold gradient-text">موقعي</span>
+                            <span className="text-xl font-bold gradient-text">{siteName}</span>
                         </Link>
                         <p className="text-gray-400 leading-relaxed">
                             موقع شخصي احترافي يعرض خدماتي ومشاريعي وخبراتي في مجال تطوير البرمجيات
