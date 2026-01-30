@@ -4,19 +4,10 @@ import Footer from '@/components/public/Footer'
 import ContactForm from '@/components/public/ContactForm'
 import { createClient } from '@/lib/supabase/server'
 import { MapPin, Mail, Phone } from 'lucide-react'
+import { generatePageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-    title: 'تواصل معي - يوسف محمد',
-    description: 'تواصل مع يوسف محمد - مهندس اتصالات ومطور تطبيقات ويب من الموصل، العراق. استفسارات المشاريع البرمجية وطلبات التعاون.',
-    keywords: [
-        'تواصل مبرمج',
-        'طلب تطوير موقع',
-        'مطور ويب الموصل',
-        'استئجار مبرمج عراقي',
-    ],
-    alternates: {
-        canonical: 'https://yousef-muhamed.vercel.app/contact',
-    },
+export async function generateMetadata(): Promise<Metadata> {
+    return generatePageMetadata('contact', '/contact')
 }
 
 export default async function ContactPage() {

@@ -3,20 +3,10 @@ import Navbar from '@/components/public/Navbar'
 import Footer from '@/components/public/Footer'
 import { createClient } from '@/lib/supabase/server'
 import { Download, FileText } from 'lucide-react'
+import { generatePageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-    title: 'السيرة الذاتية - مهندس اتصالات ومطور ويب',
-    description: 'السيرة الذاتية ليوسف محمد أسود الجوباني - مهندس اتصالات وخريج جامعة نينوى. خبرة في HTML5, CSS3, JavaScript, Node.js, Git, REST APIs وتصميم واجهات المستخدم.',
-    keywords: [
-        'سيرة ذاتية مبرمج',
-        'CV مطور ويب',
-        'مهندس اتصالات العراق',
-        'خريج جامعة نينوى',
-        'JavaScript developer CV',
-    ],
-    alternates: {
-        canonical: 'https://yousef-muhamed.vercel.app/resume',
-    },
+export async function generateMetadata(): Promise<Metadata> {
+    return generatePageMetadata('resume', '/resume')
 }
 
 export default async function ResumePage() {

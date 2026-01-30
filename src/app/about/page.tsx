@@ -2,20 +2,10 @@ import { Metadata } from 'next'
 import Navbar from '@/components/public/Navbar'
 import Footer from '@/components/public/Footer'
 import AboutSection from '@/components/public/AboutSection'
+import { generatePageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-    title: 'من أنا - يوسف محمد أسود الجوباني',
-    description: 'تعرف على يوسف محمد أسود الجوباني - مهندس اتصالات ومطور تطبيقات ويب من الموصل، العراق. خريج جامعة نينوى بخبرة في HTML5, CSS3, JavaScript, Node.js وتصميم الواجهات.',
-    keywords: [
-        'يوسف محمد',
-        'مهندس اتصالات',
-        'مطور ويب العراق',
-        'جامعة نينوى',
-        'مبرمج الموصل',
-    ],
-    alternates: {
-        canonical: 'https://yousef-muhamed.vercel.app/about',
-    },
+export async function generateMetadata(): Promise<Metadata> {
+    return generatePageMetadata('about', '/about')
 }
 
 export default function AboutPage() {

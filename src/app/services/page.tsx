@@ -2,22 +2,10 @@ import { Metadata } from 'next'
 import Navbar from '@/components/public/Navbar'
 import Footer from '@/components/public/Footer'
 import ServicesSection from '@/components/public/ServicesSection'
+import { generatePageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-    title: 'خدمات تطوير المواقع والتطبيقات',
-    description: 'خدمات يوسف محمد في تطوير البرمجيات - تطوير مواقع HTML5, CSS3, JavaScript, تطبيقات Node.js, REST APIs, تصميم واجهات Responsive Design, وحلول برمجية احترافية.',
-    keywords: [
-        'تطوير مواقع',
-        'تطوير تطبيقات ويب',
-        'HTML5 CSS3 JavaScript',
-        'Node.js developer',
-        'REST API',
-        'تصميم واجهات',
-        'برمجة مواقع العراق',
-    ],
-    alternates: {
-        canonical: 'https://yousef-muhamed.vercel.app/services',
-    },
+export async function generateMetadata(): Promise<Metadata> {
+    return generatePageMetadata('services', '/services')
 }
 
 export default function ServicesPage() {
