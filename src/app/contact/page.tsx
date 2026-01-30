@@ -6,8 +6,14 @@ import { createClient } from '@/lib/supabase/server'
 import { MapPin, Mail, Phone } from 'lucide-react'
 
 export const metadata: Metadata = {
-    title: 'تواصل معي',
-    description: 'تواصل مع يوسف محمد للاستفسارات والمشاريع البرمجية. أنا هنا لمساعدتك في تحويل أفكارك إلى واقع رقمي.',
+    title: 'تواصل معي - يوسف محمد',
+    description: 'تواصل مع يوسف محمد - مهندس اتصالات ومطور تطبيقات ويب من الموصل، العراق. استفسارات المشاريع البرمجية وطلبات التعاون.',
+    keywords: [
+        'تواصل مبرمج',
+        'طلب تطوير موقع',
+        'مطور ويب الموصل',
+        'استئجار مبرمج عراقي',
+    ],
     alternates: {
         canonical: 'https://yousef-muhamed.vercel.app/contact',
     },

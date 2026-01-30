@@ -4,8 +4,17 @@ import Footer from '@/components/public/Footer'
 import ServicesSection from '@/components/public/ServicesSection'
 
 export const metadata: Metadata = {
-    title: 'الخدمات',
-    description: 'خدمات يوسف محمد في تطوير البرمجيات - تطوير المواقع، التطبيقات، الأنظمة المتكاملة، وحلول البرمجيات الاحترافية.',
+    title: 'خدمات تطوير المواقع والتطبيقات',
+    description: 'خدمات يوسف محمد في تطوير البرمجيات - تطوير مواقع HTML5, CSS3, JavaScript, تطبيقات Node.js, REST APIs, تصميم واجهات Responsive Design, وحلول برمجية احترافية.',
+    keywords: [
+        'تطوير مواقع',
+        'تطوير تطبيقات ويب',
+        'HTML5 CSS3 JavaScript',
+        'Node.js developer',
+        'REST API',
+        'تصميم واجهات',
+        'برمجة مواقع العراق',
+    ],
     alternates: {
         canonical: 'https://yousef-muhamed.vercel.app/services',
     },

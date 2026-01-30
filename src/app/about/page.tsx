@@ -4,8 +4,15 @@ import Footer from '@/components/public/Footer'
 import AboutSection from '@/components/public/AboutSection'
 
 export const metadata: Metadata = {
-    title: 'من أنا',
-    description: 'تعرف على يوسف محمد - مطور برمجيات محترف من الموصل، العراق. خبراتي ومهاراتي في تطوير المواقع والتطبيقات.',
+    title: 'من أنا - يوسف محمد أسود الجوباني',
+    description: 'تعرف على يوسف محمد أسود الجوباني - مهندس اتصالات ومطور تطبيقات ويب من الموصل، العراق. خريج جامعة نينوى بخبرة في HTML5, CSS3, JavaScript, Node.js وتصميم الواجهات.',
+    keywords: [
+        'يوسف محمد',
+        'مهندس اتصالات',
+        'مطور ويب العراق',
+        'جامعة نينوى',
+        'مبرمج الموصل',
+    ],
     alternates: {
         canonical: 'https://yousef-muhamed.vercel.app/about',
     },
