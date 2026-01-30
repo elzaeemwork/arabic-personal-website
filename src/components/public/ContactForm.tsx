@@ -30,6 +30,13 @@ export default function ContactForm() {
 
             if (insertError) throw insertError
 
+            // Send Telegram notification (don't wait for it, don't block on errors)
+            fetch('/api/telegram', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            }).catch(console.error)
+
             setIsSuccess(true)
             e.currentTarget.reset()
         } catch (err) {
