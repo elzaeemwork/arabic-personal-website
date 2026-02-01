@@ -93,44 +93,53 @@ export const metadata: Metadata = {
 };
 
 // JSON-LD Structured Data
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: "يوسف محمد أسود الجوباني",
-  alternateName: ["Yousef Muhamed", "يوسف محمد"],
-  url: siteUrl,
-  image: `${siteUrl}/favicon.png`,
-  jobTitle: ["مهندس اتصالات", "مطور تطبيقات ويب"],
-  worksFor: {
-    "@type": "Organization",
-    name: "عمل حر",
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "يوسف محمد",
+    url: "https://yousef-muhamed.vercel.app",
+    jobTitle: "مهندس اتصالات ومطور تطبيقات ويب",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "الموصل",
+      addressCountry: "IQ",
+    },
+    // Extra rich data
+    alternateName: ["Yousef Muhamed", "يوسف محمد أسود الجوباني"],
+    image: `${siteUrl}/favicon.png`,
+    worksFor: {
+      "@type": "Organization",
+      name: "عمل حر",
+    },
+    alumniOf: {
+      "@type": "EducationalOrganization",
+      name: "جامعة نينوى - كلية هندسة الكترونيات",
+    },
+    knowsAbout: [
+      "HTML5",
+      "CSS3",
+      "JavaScript",
+      "Node.js",
+      "REST API",
+      "Git",
+      "GitHub",
+      "تصميم واجهات المستخدم",
+      "Responsive Design",
+      "UX Design",
+    ],
+    sameAs: ["https://github.com/elzaeemwork"],
+    description: "مهندس اتصالات ومطور تطبيقات ويب محترف متخصص في تطوير المواقع والتطبيقات وحلول البرمجيات المتكاملة",
+    knowsLanguage: ["ar", "en"],
   },
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "الموصل",
-    addressRegion: "نينوى",
-    addressCountry: "العراق",
-  },
-  alumniOf: {
-    "@type": "EducationalOrganization",
-    name: "جامعة نينوى - كلية هندسة الكترونيات",
-  },
-  knowsAbout: [
-    "HTML5",
-    "CSS3",
-    "JavaScript",
-    "Node.js",
-    "REST API",
-    "Git",
-    "GitHub",
-    "تصميم واجهات المستخدم",
-    "Responsive Design",
-    "UX Design",
-  ],
-  sameAs: ["https://github.com/elzaeemwork"],
-  description: "مهندس اتصالات ومطور تطبيقات ويب محترف متخصص في تطوير المواقع والتطبيقات وحلول البرمجيات المتكاملة",
-  knowsLanguage: ["ar", "en"],
-};
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "يوسف محمد",
+    alternateName: ["Yousef Muhamed", "Yousef Portfolio"],
+    url: "https://yousef-muhamed.vercel.app",
+  }
+];
 
 export default function RootLayout({
   children,
