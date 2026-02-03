@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import type { Metadata } from 'next'
 
-const siteUrl = 'https://yousef-muhamed.vercel.app'
+const siteUrl = 'https://www.yousefmuhamed.com'
 
 /**
  * Fetches SEO settings directly from database (no fallback)
